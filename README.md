@@ -17,6 +17,10 @@ DFRobot Self locking switch
 Custom case
 5V 4A Power Supply
 
+# 3d case
+
+https://cults3d.com/en/3d-model/various/piem-pi-machine
+
 # Contact
 
 Roni Bandini @RoniBandini
