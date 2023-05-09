@@ -27,11 +27,10 @@ Display.SetBrightnes(5)
 dontPrint=0
 
 # how many decimals
-#howManyDecimals=767
-howManyDecimals=2000
+howManyDecimals=767
 
 # Paper width
-columnLength=28
+columnLength=27
 
 # Gpio button
 buttonPin=22
@@ -144,7 +143,7 @@ if dontPrint==0:
 
 start = time.time()
 
-n = 1
+n = 0
 
 widthCounter=0
 myPrintLine=""
@@ -155,7 +154,7 @@ saveLog(str(datetime.now())+"\n")
 while True:
 
 
-  while n <= howManyDecimals:
+  while n <= howManyDecimals+1:
 
     while GPIO.input(buttonPin) == GPIO.LOW:
       print("Paused")
@@ -175,10 +174,17 @@ while True:
     Display.ShowDoublepoint(0)
     Display.Show(displayContent)
 
-    myPiComputed	=computePi(n)
-    decimalValue	=piDecimal(myPiComputed)
-    printWord		=getWord(decimalValue)
-    print(str(myPiComputed)+"->"+printWord)
+    if n==0:
+      printWord		=getWord(3)
+      decimalValue	= 3
+      print("3. ->"+printWord)
+    else:
+      myPiComputed	=computePi(n)
+      decimalValue	=piDecimal(myPiComputed)
+      printWord		=getWord(decimalValue)
+      print(str(myPiComputed)+"->"+printWord)
+
+
     #print("Width counter:"+str(widthCounter))
     #print("Print line:"+myPrintLine)
 
@@ -192,13 +198,13 @@ while True:
     if widthCounter+int(decimalValue)<columnLength:
       widthCounter=widthCounter+int(decimalValue)
       #print("Adding to line: "+printWord)
-      myPrintLine=myPrintLine+" "+printWord
-      myPrintLine.replace("  ", " ")
+      myPrintLine=myPrintLine+" "+printWord.strip()
+      myPrintLine = " ".join(myPrintLine.split())
     else:
       widthCounter=int(decimalValue)
-      # print previous line, removing first space
-      myPrintLine=myPrintLine.strip()
+      myPrintLine=myPrintLine
       print("Printing: "+myPrintLine)
+      myPrintLine = " ".join(myPrintLine.split())
 
       if dontPrint==0:
         printer.println(myPrintLine) 
@@ -222,7 +228,8 @@ while True:
     printer.println(myPiComputed)
     printer.println("")
     printer.println("Decimals: "+str(howManyDecimals)+" - Seconds: "+str(elapsedTime))
-    printer.println("Version: 1.0 - @RoniBandini")
+    printer.println("Version: 1.0 - 05/2023")
+    printer.println("https://bandini.medium.com/")
     printer.println("")
     printer.println("")
     printer.println("")
@@ -238,7 +245,7 @@ while True:
 
   start = time.time()
 
-  n = 1
+  n = 0
 
   widthCounter=0
   myPrintLine=""
